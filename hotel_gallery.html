@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azurea | Luxury Hotel & Resort</title>
+   <link href = "css/style.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+   
+:root {
+  --gold: #c8a97e;
+  --gold-light: #e0c097;
+  --cream: #fdfaf5;
+  --dark: #1a1410;
+  --dark-mid: #2a221c;
+  --text-main: #1a1410;
+  --text-soft: #6e6259;
+  --warm-gray: #b8a999;
+}
+    /* ── CUSTOM CURSOR ── */
+    .cursor {
+      position: fixed; width: 10px; height: 10px;
+      background: var(--gold); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .2s, height .2s, background .2s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid var(--gold-light); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width .3s, height .3s;
+    }
+
+ 
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; height: 100vh; min-height: 600px;
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.55);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      padding: 0 80px;
+      max-width: 680px;
+    }
+    .hero-content h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 300; line-height: 1.1;
+      color: var(--cream); margin-bottom: 20px;
+    }
+    .hero-content p {
+      font-size: 15px; font-weight: 300; color: rgba(253,250,245,.75);
+      line-height: 1.7; margin-bottom: 36px;
+    }
+    .btn-book {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 36px;
+      background: var(--gold); color: var(--cream);
+      font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background .25s, transform .25s;
+    }
+    .btn-book:hover { background: var(--gold-light); transform: translateY(-2px); color: var(--cream); }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      position: sticky; top: 0; z-index: 50;
+      padding: 18px 80px;
+      background: rgba(253,250,245,.96); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(154,112,64,.14);
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .filter-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+    .filter-tab {
+      font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+      padding: 9px 20px; background: transparent; border: 1px solid transparent;
+      color: var(--text-soft); cursor: pointer; transition: all .25s;
+      font-family: 'Jost', sans-serif; font-weight: 400;
+    }
+    .filter-tab:hover { color: var(--text-main); }
+    .filter-tab.active { border-color: var(--gold); color: var(--gold); }
+    .view-toggle { display: flex; gap: 8px; }
+    .view-btn {
+      width: 36px; height: 36px; background: transparent;
+      border: 1px solid rgba(154,112,64,.25); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .25s;
+    }
+    .view-btn.active, .view-btn:hover { border-color: var(--gold); background: rgba(154,112,64,.06); }
+    .view-btn svg { width: 16px; height: 16px; stroke: var(--text-soft); fill: none; }
+    .view-btn.active svg, .view-btn:hover svg { stroke: var(--gold); }
+
+    /* ── GALLERY SECTION ── */
+    .gallery-section { padding: 64px 80px 120px; background: #fdfaf5; }
+
+    /* MASONRY */
+    .gallery-masonry { columns: 3; column-gap: 16px; }
+    .gallery-masonry .card { break-inside: avoid; margin-bottom: 16px; }
+    .gallery-masonry .card:nth-child(5n+2) { margin-top: 40px; }
+    .gallery-masonry .card:nth-child(3n+1) .card-img { height: 300px; }
+    .gallery-masonry .card:nth-child(3n+2) .card-img { height: 220px; }
+    .gallery-masonry .card:nth-child(3n)   .card-img { height: 260px; }
+
+    /* GRID */
+    .gallery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .gallery-grid .card { height: 300px; }
+    .gallery-grid .card.wide { grid-column: span 2; }
+    .gallery-grid .card.tall { grid-row: span 2; height: 616px; }
+
+    /* LIST */
+    .gallery-list { display: flex; flex-direction: column; gap: 2px; }
+    .gallery-list .card { display: flex; height: 160px; }
+    .gallery-list .card .card-img { width: 260px; flex-shrink: 0; height: 100%; }
+    .gallery-list .card .card-info {
+      opacity: 1 !important; position: static !important;
+      transform: none !important; padding: 28px 36px;
+      background: #f2ece3;
+      display: flex; flex-direction: column; justify-content: center; flex: 1;
+    }
+    .gallery-list .card-title { color: var(--text-main) !important; }
+
+    /* CARD BASE */
+    .card { position: relative; overflow: hidden; cursor: pointer; border: none; border-radius: 0; }
+    .card-img { width: 100%; height: 100%; display: block; overflow: hidden; }
+    .card-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .7s cubic-bezier(.16,1,.3,1), filter .5s;
+      filter: brightness(.88) saturate(.9);
+    }
+    .card:hover .card-img img { transform: scale(1.07); filter: brightness(1) saturate(1); }
+    .card-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 20px 22px 18px;
+      background: linear-gradient(to top, rgba(26,20,16,.95) 0%, transparent 100%);
+      opacity: 0; transform: translateY(10px);
+      transition: opacity .35s, transform .35s;
+    }
+    .card:hover .card-info { opacity: 1; transform: translateY(0); }
+    .card-category {
+      font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 6px;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px; font-weight: 400; color: #fff;
+    }
+    .card-badge {
+      position: absolute; top: 14px; right: 14px;
+      font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+      padding: 5px 12px; background: var(--gold); color: var(--dark); font-weight: 500;
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      padding: 56px 80px; background: var(--dark-mid);
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-top: 1px solid rgba(255,255,255,.07);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .stat { text-align: center; padding: 0 20px; }
+    .stat + .stat { border-left: 1px solid rgba(255,255,255,.07); }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px; font-weight: 300; line-height: 1;
+      color: var(--gold); letter-spacing: -.02em;
+    }
+    .stat-label {
+      font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--warm-gray); margin-top: 8px;
+    }
+
+    /* ── VIDEO BANNER ── */
+    .video-banner { margin: 80px 80px 0; position: relative; height: 440px; overflow: hidden; }
+    .video-banner img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.6); }
+    .video-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+    }
+    .play-btn {
+      width: 80px; height: 80px; border: 1px solid var(--cream);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color .25s, transform .25s;
+    }
+    .play-btn:hover { border-color: var(--gold); transform: scale(1.08); }
+    .play-btn svg { width: 26px; height: 26px; fill: var(--cream); margin-left: 4px; }
+    .video-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 300; letter-spacing: .04em;
+      color: var(--cream); text-align: center;
+    }
+    .video-caption em { color: var(--gold-light); font-style: italic; }
+
+    /* ── AWARDS ── */
+    .awards {
+      padding: 72px 80px; background: var(--dark);
+      display: flex; align-items: center; justify-content: center; gap: 80px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .award { text-align: center; opacity: .55; transition: opacity .3s; }
+    .award:hover { opacity: 1; }
+    .award-icon { font-size: 32px; margin-bottom: 10px; }
+    .award-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; font-weight: 400; letter-spacing: .06em; color: var(--gold-light); margin-bottom: 4px;
+    }
+    .award-body { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--warm-gray); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 80px; background: var(--dark-mid);
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 48px;
+    }
+    .testimonial-item { position: relative; padding-top: 32px; }
+    .testimonial-item::before {
+      content: '"'; font-family: 'Cormorant Garamond', serif;
+      font-size: 80px; color: var(--gold); opacity: .3;
+      position: absolute; top: -8px; left: -8px; line-height: 1;
+    }
+    .testimonial-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 300; font-style: italic;
+      line-height: 1.65; color: var(--cream); margin-bottom: 20px;
+    }
+    .testimonial-author {
+      font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); display: flex; align-items: center; gap: 10px;
+    }
+    .testimonial-author::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+
+   
+        /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(10,8,6,.96); backdrop-filter: blur(12px);
+      display: none; align-items: center; justify-content: center; padding: 40px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-img {
+      max-width: 80vw; max-height: 80vh; object-fit: contain;
+      animation: lbFade .4s ease;
+    }
+    @keyframes lbFade { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+    .lb-close {
+      position: fixed; top: 24px; right: 32px;
+      font-size: 28px; color: var(--warm-gray); cursor: pointer;
+      transition: color .2s; line-height: 1;
+    }
+    .lb-close:hover { color: var(--gold); }
+    .lb-prev, .lb-next {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      font-size: 32px; color: var(--warm-gray); cursor: pointer;
+      transition: color .2s; padding: 20px;
+    }
+    .lb-prev { left: 16px; } .lb-next { right: 16px; }
+    .lb-prev:hover, .lb-next:hover { color: var(--gold); }
+    .lb-caption {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+      font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic;
+      color: var(--cream); white-space: nowrap;
+    }
+    .lb-counter {
+      position: fixed; top: 28px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; letter-spacing: .15em; color: var(--warm-gray);
+    }
+
+    /* ── UTILITY ── */
+    [data-cat].hidden { display: none !important; }
+    .reveal { opacity: 1; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .gallery-masonry { columns: 2; }
+      .gallery-grid { grid-template-columns: repeat(2,1fr); }
+      nav, .filter-bar, .gallery-section, .stats-strip, .video-banner,
+      .awards, .testimonials, footer { padding-left: 32px; padding-right: 32px; }
+      .hero-content { padding: 0 40px; }
+    }
+    @media (max-width: 720px) {
+      .gallery-masonry { columns: 1; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .menu-toggle { display: block; }
+      .stats-strip { grid-template-columns: repeat(2,1fr); }
+      .testimonials { grid-template-columns: 1fr; }
+      .awards { flex-wrap: wrap; gap: 36px; }
+      .video-banner { margin: 40px 32px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">AZUREA<span>✦</span></div>
+        <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">about</a></li>
+            <li><a href="#rooms">Rooms</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#amenities">Amenities</a></li>
+            <li><a href="#offers">Offers</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section id="home" class="hero">
+  <div class="hero-bg">
+    <img src="assets/images/bg-gallery.avif" alt="Luxury Hotel" loading="eager">
+  </div>
+  <div class="hero-content">
+    <h1>Escape to Timeless Luxury</h1>
+    <p>Indulge in elegance, breathtaking views, and curated experiences. Your sanctuary awaits.</p>
+    <a href="#booking" class="btn-book"><i class="fas fa-calendar-alt"></i> Book Your Stay</a>
+  </div>
+</section>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-filter="all">All</button>
+    <button class="filter-tab" data-filter="rooms">Rooms & Suites</button>
+    <button class="filter-tab" data-filter="dining">Dining</button>
+    <button class="filter-tab" data-filter="spa">Wellness & Spa</button>
+    <button class="filter-tab" data-filter="views">Views</button>
+    <button class="filter-tab" data-filter="events">Events</button>
+  </div>
+  <div class="view-toggle">
+    <button class="view-btn active" id="viewMasonry" title="Masonry">
+      <svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="9"/><rect x="9" y="1" width="6" height="5"/><rect x="9" y="8" width="6" height="7"/><rect x="1" y="12" width="6" height="3"/></svg>
+    </button>
+    <button class="view-btn" id="viewGrid" title="Grid">
+      <svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6"/><rect x="9" y="1" width="6" height="6"/><rect x="1" y="9" width="6" height="6"/><rect x="9" y="9" width="6" height="6"/></svg>
+    </button>
+    <button class="view-btn" id="viewList" title="List">
+      <svg viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="4"/><rect x="1" y="7" width="14" height="4"/><rect x="1" y="13" width="14" height="2"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Gallery -->
+<section class="gallery-section">
+  <div class="gallery-masonry" id="galleryContainer">
+
+    <div class="card reveal" data-cat="rooms">
+      <div class="card-img"><img src="assets/images/gallery-1.avif" alt="Deluxe Suite" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Rooms & Suites</div><div class="card-title">Himalayan Deluxe Suite</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="dining">
+      <div class="card-img"><img src="assets/images/gallery-2.avif" alt="The Cedars" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Dining</div><div class="card-title">The Cedars Restaurant</div></div>
+      <div class="card-badge">Awarded</div>
+    </div>
+
+    <div class="card reveal" data-cat="views">
+      <div class="card-img"><img src="assets/images/gallery-3.avif" alt="Mountain Views" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Views</div><div class="card-title">Morning Mist Panorama</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="spa">
+      <div class="card-img"><img src="assets/images/gallery-4.avif" alt="Spa" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Wellness & Spa</div><div class="card-title">Ananda Spa Sanctuary</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="rooms">
+      <div class="card-img"><img src="assets/images/gallery-5.avif" alt="Presidential Suite" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Rooms & Suites</div><div class="card-title">Presidential Suite</div></div>
+      <div class="card-badge">Signature</div>
+    </div>
+
+    <div class="card reveal" data-cat="views">
+      <div class="card-img"><img src="assets/images/gallery-6.avif" alt="Valley View" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Views</div><div class="card-title">Sunset Valley Vista</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="dining">
+      <div class="card-img"><img src="assets/images/gallery-7.avif" alt="Bar" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Dining</div><div class="card-title">The Colonial Bar</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="events">
+      <div class="card-img"><img src="assets/images/gallery-8.avif" alt="Ballroom" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Events</div><div class="card-title">Grand Ballroom</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="spa">
+      <div class="card-img"><img src="assets/images/gallery-9.avif" alt="Pool" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Wellness & Spa</div><div class="card-title">Infinity Wellness Pool</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="rooms">
+      <div class="card-img"><img src="assets/images/gallery-10.avif" alt="Classic Room" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Rooms & Suites</div><div class="card-title">Heritage Classic Room</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="dining">
+      <div class="card-img"><img src="assets/images/gallery-11.avif" alt="Terrace Dining" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Dining</div><div class="card-title">Terrace al Fresco</div></div>
+    </div>
+
+    <div class="card reveal" data-cat="events">
+      <div class="card-img"><img src="assets/images/gallery-12.avif" alt="Garden Wedding" loading="lazy"></div>
+      <div class="card-info"><div class="card-category">Events</div><div class="card-title">Garden Ceremonies</div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Stats Strip -->
+<div class="stats-strip reveal">
+  <div class="stat"><div class="stat-number">120</div><div class="stat-label">Elegant Rooms</div></div>
+  <div class="stat"><div class="stat-number">4</div><div class="stat-label">Award-winning Restaurants</div></div>
+  <div class="stat"><div class="stat-number">1891</div><div class="stat-label">Est. Heritage Year</div></div>
+  <div class="stat"><div class="stat-number">8K<small style="font-size:.4em">ft</small></div><div class="stat-label">Altitude Elevation</div></div>
+</div>
+
+<!-- Video Banner -->
+<div class="video-banner reveal">
+  <img src="assets/images/video.avif" alt="Hotel exterior">
+  <div class="video-center">
+    <div class="play-btn">
+      <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+    </div>
+    <div class="video-caption">Experience <em>The Grand Azurea</em><br>in full motion</div>
+  </div>
+</div>
+
+<!-- Awards -->
+<div class="awards reveal">
+  <div class="award"><div class="award-icon">🏆</div><div class="award-name">Best Heritage Hotel</div><div class="award-body">Travel + Leisure India 2024</div></div>
+  <div class="award"><div class="award-icon">⭐</div><div class="award-name">5-Star Excellence</div><div class="award-body">Ministry of Tourism</div></div>
+  <div class="award"><div class="award-icon">🌿</div><div class="award-name">Green Leaf Certified</div><div class="award-body">Responsible Hospitality</div></div>
+  <div class="award"><div class="award-icon">🍽️</div><div class="award-name">Culinary Award</div><div class="award-body">Times Food Awards 2024</div></div>
+</div>
+
+<!-- Testimonials -->
+<div class="testimonials reveal">
+  <div class="testimonial-item">
+    <div class="testimonial-text">The views from our suite were unlike anything we had ever witnessed. Waking up to the Himalayan range every morning felt like a gift.</div>
+    <div class="testimonial-author">Priya & Arjun Mehta, Mumbai</div>
+  </div>
+  <div class="testimonial-item">
+    <div class="testimonial-text">The spa treatments were deeply restorative, and the staff's warmth made us feel at home in the most exquisite surroundings imaginable.</div>
+    <div class="testimonial-author">Sarah & James Thornton, London</div>
+  </div>
+  <div class="testimonial-item">
+    <div class="testimonial-text">Our wedding reception in the Grand Ballroom was flawlessly orchestrated. Every detail — the florals, the lighting, the cuisine — was pure perfection.</div>
+    <div class="testimonial-author">Ritu & Dev Kapoor, Delhi</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="footer-logo"><i class="fas fa-hotel me-2"></i>Azurea</div>
+                <p class="mt-3">Luxury redefined. Experience unparalleled comfort and service.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 class="text-gold">Contact</h5>
+                <p><i class="fas fa-map-marker-alt me-2" style="color: var(--gold);"></i> 123 Main Street, City</p>
+                <p><i class="fas fa-phone me-2" style="color: var(--gold);"></i> +1 234 567 890</p>
+                <p><i class="fas fa-envelope me-2" style="color: var(--gold);"></i> info@Azurea.com</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5 class="text-gold">Follow Us</h5>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="bg-secondary">
+        <p class="text-center mb-0">&copy; 2025 AZUREA. All rights reserved.</p>
+    </div>
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ── CUSTOM CURSOR ──
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx) * .12; ry += (my - ry) * .12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .card, .play-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.width='6px'; cursor.style.height='6px'; ring.style.width='56px'; ring.style.height='56px'; });
+    el.addEventListener('mouseleave', () => { cursor.style.width='10px'; cursor.style.height='10px'; ring.style.width='36px'; ring.style.height='36px'; });
+  });
+
+  // ── HEADER SCROLL ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── FILTER TABS ──
+  const tabs = document.querySelectorAll('.filter-tab');
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const f = tab.dataset.filter;
+    document.querySelectorAll('#galleryContainer .card').forEach(card => {
+      if (f === 'all' || card.dataset.cat === f) card.classList.remove('hidden');
+      else card.classList.add('hidden');
+    });
+  }));
+
+  // ── VIEW TOGGLE ──
+  const container = document.getElementById('galleryContainer');
+  document.getElementById('viewMasonry').addEventListener('click', function() { setView('masonry', this); });
+  document.getElementById('viewGrid').addEventListener('click', function() { setView('grid', this); });
+  document.getElementById('viewList').addEventListener('click', function() { setView('list', this); });
+
+  function setView(mode, btn) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // ❗ Sirf layout classes remove karo
+  container.classList.remove('gallery-masonry', 'gallery-grid', 'gallery-list');
+
+  if (mode === 'masonry') {
+    container.classList.add('gallery-masonry');
+  }
+  else if (mode === 'grid') {
+    container.classList.add('gallery-grid');
+    applyGridVariants();
+  }
+  else {
+    container.classList.add('gallery-list');
+  }
+}
+  function applyGridVariants() {
+    const cards = container.querySelectorAll('.card:not(.hidden)');
+    cards.forEach(c => { c.classList.remove('wide','tall'); });
+    if (cards[0]) cards[0].classList.add('wide');
+    if (cards[4]) cards[4].classList.add('tall');
+  }
+
+  // ── LIGHTBOX ──
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCap = document.getElementById('lbCaption');
+  const lbCtr = document.getElementById('lbCounter');
+  let currentIdx = 0;
+
+  function getVisibleCards() {
+    return [...document.querySelectorAll('#galleryContainer .card:not(.hidden)')];
+  }
+  function openLightbox(idx) {
+    const cards = getVisibleCards();
+    currentIdx = idx;
+    const img = cards[idx].querySelector('img');
+    const title = cards[idx].querySelector('.card-title')?.textContent || '';
+    lbImg.src = img.src;
+    lbCap.textContent = title;
+    lbCtr.textContent = (idx + 1) + ' / ' + cards.length;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  function navigate(dir) {
+    const cards = getVisibleCards();
+    currentIdx = (currentIdx + dir + cards.length) % cards.length;
+    openLightbox(currentIdx);
+  }
+
+  document.querySelectorAll('#galleryContainer .card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const visible = getVisibleCards();
+      const vi = visible.indexOf(card);
+      if (vi >= 0) openLightbox(vi);
+    });
+  });
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', () => navigate(-1));
+  document.getElementById('lbNext').addEventListener('click', () => navigate(1));
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+
+  // ── SCROLL REVEAL ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: .1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
